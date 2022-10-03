@@ -1,0 +1,31 @@
+{% load i18n %}
+<footer >
+    <div >
+        <span>&copy; 2022 vincent@neuralia.co {% trans "All rights reserved" %}.</span>
+    </div>
+    <div >
+        {% get_current_language as LANGUAGE_CODE %}
+        <select  id="js-lang">
+            <option value="en"
+                {% if LANGUAGE_CODE == 'en' %}
+                    selected
+                {% endif %}
+            >English</option>
+            <option value="fr"
+                {% if LANGUAGE_CODE == 'fr' %}
+                    selected
+                {% endif %}
+            >Français</option>
+            <option value="es"
+                {% if LANGUAGE_CODE == 'es' %}
+                    selected
+                {% endif %}
+            >Español</option>
+            <option value="es"
+                {% if LANGUAGE_CODE == 'de' %}
+                    selected
+                {% endif %}
+            >Deutsch</option>
+        </select>
+    </div>
+</footer>

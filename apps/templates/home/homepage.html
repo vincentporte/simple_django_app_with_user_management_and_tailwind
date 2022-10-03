@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% load static i18n %}
+{% block page_title %}
+    Home
+{% endblock page_title %}
+
+{% block content %}
+    Bienvenue {{user.first_name}}
+{% endblock content%}

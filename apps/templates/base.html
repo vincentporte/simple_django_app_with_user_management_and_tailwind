@@ -1,0 +1,36 @@
+{% load static i18n %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link href="{% static 'fontawesomefree/css/fontawesome.css' %}" rel="stylesheet" type="text/css">
+        <link href="{% static 'fontawesomefree/css/brands.css' %}" rel="stylesheet" type="text/css">
+        <link href="{% static 'fontawesomefree/css/solid.css' %}" rel="stylesheet" type="text/css">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+
+        <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+        <title>{% block page_title %}{% endblock page_title %}| Simple Django App</title>
+    </head>
+    <body>
+        {% include "partials/messages.html" %}
+        <header >
+            <div >
+                <a href="{% url "home:homepage" %}">
+                    <img src="{% static 'img/logo.png' %}" />
+                </a>
+            </div>
+        </header>
+
+        {% block content %}{% endblock %}
+        {% include "partials/footer.html" %}
+        <script>
+            const langSelect = document.getElementById("js-lang");
+            const handleLangChange = () => {
+                const selected = langSelect.value;
+                fetch(`{% url 'users:switch-language' %}?lang=${selected}`).then(() => window.location.reload());
+            }
+            langSelect.addEventListener("change", handleLangChange);
+        </script>
+    </body>
+</html>
