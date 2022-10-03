@@ -6,4 +6,6 @@
 
 {% block content %}
     Bienvenue {{user.first_name}}
+    {% if perms.users.host %}<a href="{% url 'users:host' %}" >link to host page</a>{% endif %}
+
 {% endblock content%}

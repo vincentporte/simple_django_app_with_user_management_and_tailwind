@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block page_title %}
+    Log In
+{% endblock page_title %}
+
+{% block search-bar %}
+{% endblock search-bar %}
+
+{% block content %}
+
+    <div >
+
+        {% include 'mixins/auth/auth_form.html' with form=form cta="Log in" %}
+
+        <div >
+            <span >Don't have an account?</span>
+            <a href="{% url 'users:signup' %}" >Sign up</a>
+        </div>
+    </div>
+{% endblock content %}
