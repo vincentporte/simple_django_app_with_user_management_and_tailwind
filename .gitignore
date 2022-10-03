@@ -1,0 +1,33 @@
+# Dotenv
+.env
+
+# Virtualenv
+.venv
+venv/
+ENV/
+
+# Django stuff:
+*.log
+public/
+
+# IPython
+.ipython
+
+# Code quality
+.pylint.d
+*.isorted
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+/.local/
+.pytest_cache
+
+# Debian
+.bash_history
+.python_history
+
+# Mac Os
+.DS_Store
+

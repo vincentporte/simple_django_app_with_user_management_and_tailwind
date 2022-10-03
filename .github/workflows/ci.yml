@@ -1,0 +1,57 @@
+name: 🔮 CI
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    env:
+      PYTHONPATH: .
+      DJANGO_SETTINGS_MODULE: config.settings.base
+      DJANGO_SECRET_KEY: SkincareExcluding0Ecard
+      CPUCOUNT: 1
+      PGPASSWORD: password
+      PGHOST: localhost
+      PGUSER: postgres
+      POSTGRESQL_DB: simple_user_app
+      POSTGRESQL_USER: postgres
+      POSTGRESQL_PASSWORD: password
+    services:
+      postgres:
+        # Docker Hub image
+        image: postgres:14.5-alpine
+        env:
+          POSTGRES_PASSWORD: password
+        ports:
+          - 5432:5432
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: 💾 Create a database to check migrations
+        run: |
+          psql <<SQL
+              CREATE DATABASE simple_user_app;
+          SQL
+      - name: 💂 Install Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - name: 📥 Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements/dev.txt
+      - name: ✨ Black, isort, flake8 & djhtml
+        run: make quality
+      - name: 🚧 Check pending migrations
+        run: django-admin makemigrations --check --dry-run --noinput
+      - name: 🤹‍ Django tests
+        run: django-admin test --noinput --failfast --parallel
+        env:
+          DJANGO_DEBUG: True
