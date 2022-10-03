@@ -1,13 +1,14 @@
+ifeq ($(USE_POETRY),1)
+	EXEC_CMD := poetry run
+else
+	EXEC_CMD :=
+endif
+
 ifeq ($(DJANGO_SETTINGS),)
     SETTINGS :=
 else
     SETTINGS := --settings=$(DJANGO_SETTINGS)
 endif
-
-.PHONY: testy
-testy:
-	echo "$(SETTINGS)"
-
 
 .PHONY: console migrate migrations server
 
@@ -18,16 +19,16 @@ testy:
 # --------------------------------------------------------------------------------------------------
 
 console:
-	poetry run python manage.py shell $(SETTINGS)
+	$(EXEC_CMD) python manage.py shell $(SETTINGS)
 
 migrate:
-	poetry run python manage.py migrate $(SETTINGS)
+	$(EXEC_CMD) python manage.py migrate $(SETTINGS)
 
 migrations:
-	poetry run python manage.py makemigrations $(SETTINGS)
+	$(EXEC_CMD) python manage.py makemigrations $(SETTINGS)
 
 server:
-	poetry run python manage.py runserver $(SETTINGS)
+	$(EXEC_CMD) python manage.py runserver $(SETTINGS)
 
 
 # QUALITY ASSURANCE
@@ -37,21 +38,21 @@ server:
 
 .PHONY: quality pylint black flake8 isort
 quality:
-	poetry run black --check apps
-	poetry run isort --check --profile black apps
-	poetry run flake8 apps --count --show-source --statistics
+	$(EXEC_CMD) black --check apps
+	$(EXEC_CMD) isort --check --profile black apps
+	$(EXEC_CMD) flake8 apps --count --show-source --statistics
 
 pylint:
-	poetry run pylint apps
+	$(EXEC_CMD) pylint apps
 
 black:
-	poetry run black apps
+	$(EXEC_CMD) black apps
 
 flake8:
-	poetry run flake8 apps
+	$(EXEC_CMD) flake8 apps
 
 isort:
-	poetry run isort --profile black apps
+	$(EXEC_CMD) isort --profile black apps
 
 # Docker shell.
 # =============================================================================
@@ -67,13 +68,9 @@ shell_on_postgres_container:
 
 .PHONY: psql psql_root
 
-# Connect to postgres client as user.
+# Connect to the `postgres` container as the POSTGRES_USER user.
 psql:
-	docker exec -ti -e PGPASSWORD=password postgres psql -U postgres
-
-# Connect to postgres client as the `root` user.
-psql_root:
-	docker exec -ti -e PGPASSWORD=password postgres psql -U postgres
+	docker exec -ti -e PGPASSWORD=$(POSTGRES_PASSWORD) postgres psql -U $(POSTGRES_USER)
 
 
 # TESTING
