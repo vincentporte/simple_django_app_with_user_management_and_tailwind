@@ -11,6 +11,7 @@ def main():
     from django.conf import settings
 
     if settings.DEBUG:
+        # debugger should start only on main worker
         if os.environ.get("RUN_MAIN") or os.environ.get("WERKZEUG_RUN_MAIN"):
             import debugpy
 
