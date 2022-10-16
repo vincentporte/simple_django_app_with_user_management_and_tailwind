@@ -20,52 +20,61 @@ from apps.users.models import User
 class LoginViewTest(TestCase):
     def setUp(self):
         self.user = UserFactory()
+        self.url = reverse("users:login")
+
+    def test_csrf(self):
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "csrfmiddlewaretoken")
 
     def test_login_not_valid(self):
-        url = reverse("users:login")
-        response = self.client.get(url)
+        response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
 
         form_data = {
             "email": self.user.email,
             "password": "wrongpassword",
         }
-        response = self.client.post(url, data=form_data)
+        response = self.client.post(self.url, data=form_data)
         self.assertEqual(response.status_code, 200)
 
     def test_login_valid(self):
-        url = reverse("users:login")
-        response = self.client.get(url)
+        response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
 
         form_data = {
             "email": self.user.email,
             "password": DEFAULT_PASSWORD,
         }
-        response = self.client.post(url, data=form_data)
+        response = self.client.post(self.url, data=form_data)
         self.assertRedirects(response, reverse("home:homepage"), status_code=302)
 
 
 class SignUpViewTest(TestCase):
     def setUp(self) -> None:
         self.email = "signup@neuralia.co"
+        self.url = reverse("users:signup")
+
+    def test_csrf(self):
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "csrfmiddlewaretoken")
 
     def test_signup_not_valid(self):
-        url = reverse("users:signup")
-        response = self.client.get(url)
+        response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
 
         form_data = {
             "email": self.email,
         }
-        response = self.client.post(url, data=form_data)
+        response = self.client.post(self.url, data=form_data)
         self.assertEqual(response.status_code, 200)
+
         with self.assertRaises(User.DoesNotExist):
             User.objects.get(email=self.email)
 
     def test_signup_valid(self):
-        url = reverse("users:signup")
-        response = self.client.get(url)
+        response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
 
         form_data = {
@@ -75,7 +84,7 @@ class SignUpViewTest(TestCase):
             "first_name": "John",
             "last_name": "Woo",
         }
-        response = self.client.post(url, data=form_data)
+        response = self.client.post(self.url, data=form_data)
         self.assertRedirects(response, reverse("home:homepage"), status_code=302)
         self.assertIsNotNone(User.objects.get(email=self.email, email_verified=False))
         email = mail.outbox[0]
@@ -116,6 +125,12 @@ class UpdateProfileView(TestCase):
     def setUp(self) -> None:
         self.user = UserFactory()
         self.url = reverse("users:update")
+
+    def test_csrf(self):
+        self.client.login(email=self.user.email, password=DEFAULT_PASSWORD)
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "csrfmiddlewaretoken")
 
     def test_fields(self):
         self.client.login(email=self.user.email, password=DEFAULT_PASSWORD)
@@ -165,6 +180,12 @@ class UpdatePasswordViewTest(TestCase):
     def setUp(self) -> None:
         self.user = UserFactory()
         self.url = reverse("users:password")
+
+    def test_csrf(self):
+        self.client.login(email=self.user.email, password=DEFAULT_PASSWORD)
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "csrfmiddlewaretoken")
 
     def test_anonymous(self):
         response = self.client.get(self.url)
