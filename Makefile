@@ -10,7 +10,7 @@ else
     SETTINGS := --settings=$(DJANGO_SETTINGS)
 endif
 
-.PHONY: console migrate migrations server requirements
+.PHONY: console migrate migrations server dependencies
 
 # DEVELOPMENT
 # ~~~~~~~~~~~
@@ -30,8 +30,8 @@ migrations:
 server:
 	$(EXEC_CMD) python manage.py runserver $(SETTINGS)
 
-requirements:
-	$(EXEC_CMD) poe export; $(EXEC_CMD) poe export_dev
+dependencies:
+	poetry lock; poetry run poe export; poetry run poe export_dev
 
 # QUALITY ASSURANCE
 # ~~~~~~~~~~~~~~~~~
