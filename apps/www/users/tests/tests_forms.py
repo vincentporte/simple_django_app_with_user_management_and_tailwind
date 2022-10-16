@@ -52,7 +52,6 @@ class SignUpFormTest(TestCase):
         self.assertFalse(form.is_valid())
         self.assertIn("Ce champ est obligatoire.", form.errors["email"])
         self.assertIn("Ce champ est obligatoire.", form.errors["password"])
-        self.assertIn("Ce champ est obligatoire.", form.errors["password1"])
 
     def test_email_exists(self):
         form_data = {
@@ -64,21 +63,10 @@ class SignUpFormTest(TestCase):
         self.assertFalse(form.is_valid())
         self.assertIn("That email is already taken", form.errors["email"])
 
-    def test_passwords_dont_match(self):
-        form_data = {
-            "email": "test@test.com",
-            "password": DEFAULT_PASSWORD,
-            "password1": "notmatchingpassword",
-        }
-        form = SignUpForm(data=form_data)
-        self.assertFalse(form.is_valid())
-        self.assertIn("Password confirmation does not match", form.errors["password1"])
-
     def test_signup_ok(self):
         form_data = {
             "email": "test@test.com",
             "password": DEFAULT_PASSWORD,
-            "password1": DEFAULT_PASSWORD,
         }
         form = SignUpForm(data=form_data)
         self.assertTrue(form.is_valid())

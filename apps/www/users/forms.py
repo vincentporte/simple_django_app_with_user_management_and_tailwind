@@ -31,7 +31,6 @@ class SignUpForm(forms.ModelForm):
         }
 
     password = forms.CharField(widget=forms.PasswordInput(attrs={"placeholder": "Password"}))
-    password1 = forms.CharField(widget=forms.PasswordInput(attrs={"placeholder": "Confirm Password"}))
 
     def clean_email(self):
         email = self.cleaned_data.get("email")
@@ -40,13 +39,6 @@ class SignUpForm(forms.ModelForm):
             raise forms.ValidationError("That email is already taken", code="existing_user")
         except User.DoesNotExist:
             return email
-
-    def clean_password1(self):
-        password = self.cleaned_data.get("password")
-        password1 = self.cleaned_data.get("password1")
-        if password != password1:
-            raise forms.ValidationError("Password confirmation does not match")
-        return password
 
     def save(self, *args, **kwargs):
         user = super().save(commit=False)
