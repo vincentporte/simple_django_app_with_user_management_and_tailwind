@@ -229,8 +229,8 @@ class UpdatePasswordViewTest(TestCase):
 
         form_data = {
             "old_password": DEFAULT_PASSWORD,
-            "new_password1": "newpassword",
-            "new_password2": "newpassword",
+            "new_password1": DEFAULT_PASSWORD + "2",
+            "new_password2": DEFAULT_PASSWORD + "2",
         }
         response = self.client.post(self.url, data=form_data)
         self.assertRedirects(
