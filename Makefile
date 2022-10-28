@@ -10,7 +10,7 @@ else
     SETTINGS := --settings=$(DJANGO_SETTINGS)
 endif
 
-.PHONY: console migrate migrations server dependencies
+.PHONY: console migrate migrations server
 
 # DEVELOPMENT
 # ~~~~~~~~~~~
@@ -30,31 +30,26 @@ migrations:
 server:
 	$(EXEC_CMD) python manage.py runserver $(SETTINGS)
 
-dependencies:
-	poetry lock; poetry run poe export; poetry run poe export_dev
-
 # QUALITY ASSURANCE
 # ~~~~~~~~~~~~~~~~~
 # The following rules can be used to check code quality, import sorting, etc.
 # --------------------------------------------------------------------------------------------------
 
-.PHONY: quality pylint black flake8 isort
+.PHONY: quality fix pylint
 quality:
 	$(EXEC_CMD) black --check apps
-	$(EXEC_CMD) isort --check --profile black apps
+	$(EXEC_CMD) isort --check apps
 	$(EXEC_CMD) flake8 apps --count --show-source --statistics
+	$(EXEC_CMD) djhtml --check $(shell find apps/templates -name "*.html")
+
+fix:
+	$(EXEC_CMD) black apps
+	$(EXEC_CMD) isort apps
+	$(EXEC_CMD) flake8 apps
+	$(EXEC_CMD) djhtml --in-place $(shell find apps/templates -name "*.html")
 
 pylint:
 	$(EXEC_CMD) pylint apps
-
-black:
-	$(EXEC_CMD) black apps
-
-flake8:
-	$(EXEC_CMD) flake8 apps
-
-isort:
-	$(EXEC_CMD) isort --profile black apps
 
 # Docker shell.
 # =============================================================================
