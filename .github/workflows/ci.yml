@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       PYTHONPATH: .
-      DJANGO_SETTINGS_MODULE: config.settings.base
+      DJANGO_SETTINGS_MODULE: config.settings.test
       DJANGO_SECRET_KEY: SkincareExcluding0Ecard
       CPUCOUNT: 1
       POSTGRES_DB: github_actions
