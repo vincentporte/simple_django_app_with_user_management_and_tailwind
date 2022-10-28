@@ -139,7 +139,7 @@ class UpdateProfileView(TestCase):
 
         form = response.context_data["form"]
         self.assertEqual(
-            [k for k in form.fields.keys()],
+            list(form.fields.keys()),
             ["first_name", "last_name", "gender", "bio", "birthdate", "language"],
         )
 
