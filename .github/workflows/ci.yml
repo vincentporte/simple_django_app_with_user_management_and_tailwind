@@ -11,18 +11,19 @@ jobs:
       DJANGO_SETTINGS_MODULE: config.settings.base
       DJANGO_SECRET_KEY: SkincareExcluding0Ecard
       CPUCOUNT: 1
-      PGPASSWORD: password
-      PGHOST: localhost
-      PGUSER: postgres
-      POSTGRESQL_DB: simple_user_app
-      POSTGRESQL_USER: postgres
-      POSTGRESQL_PASSWORD: password
+      POSTGRES_DB: github_actions
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_HOST: localhost
+      POSTGRES_PORT: 5432
+
     services:
       postgres:
-        # Docker Hub image
-        image: postgres:14.5-alpine
+        image: postgres:14.5
         env:
-          POSTGRES_PASSWORD: password
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: github_actions
         ports:
           - 5432:5432
         # Set health checks to wait until postgres has started
@@ -34,11 +35,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - name: 💾 Create a database to check migrations
-        run: |
-          psql <<SQL
-              CREATE DATABASE simple_user_app;
-          SQL
       - name: 💂 Install Python
         uses: actions/setup-python@v4
         with:
@@ -50,8 +46,7 @@ jobs:
       - name: ✨ Black, isort, flake8 & djhtml
         run: make quality
       - name: 🚧 Check pending migrations
-        run: django-admin makemigrations --check --dry-run --noinput
-      #- name: 🤹‍ Django tests
-      #  run: django-admin test --noinput --failfast --parallel
-      #  env:
-      #    DJANGO_DEBUG: True
+        run: python manage.py makemigrations --check --dry-run --noinput
+      - name: 🤹‍ Django tests
+        run: python manage.py test --noinput --failfast --parallel
+
