@@ -233,7 +233,13 @@ class UpdatePasswordViewTest(TestCase):
             "new_password2": "newpassword",
         }
         response = self.client.post(self.url, data=form_data)
-        self.assertRedirects(response, self.user.get_absolute_url(), status_code=302)
+        self.assertRedirects(
+            response,
+            self.user.get_absolute_url(),
+            status_code=302,
+            target_status_code=200,
+            fetch_redirect_response=False,
+        )
 
 
 class PasswordResetViewTest(TestCase):
