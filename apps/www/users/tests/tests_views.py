@@ -121,7 +121,7 @@ class UserProfileViewTest(TestCase):
         self.assertEqual(response.status_code, 404)
 
 
-class UpdateProfileView(TestCase):
+class UpdateProfileViewTest(TestCase):
     def setUp(self) -> None:
         self.user = UserFactory()
         self.url = reverse("users:update")
