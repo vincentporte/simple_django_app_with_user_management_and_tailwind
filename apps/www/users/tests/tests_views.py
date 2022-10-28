@@ -177,9 +177,10 @@ class UpdateProfileViewTest(TestCase):
 
 
 class UpdatePasswordViewTest(TestCase):
-    def setUp(self) -> None:
-        self.user = UserFactory()
-        self.url = reverse("users:password")
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = UserFactory()
+        cls.url = reverse("users:password")
 
     def test_csrf(self):
         self.client.login(email=self.user.email, password=DEFAULT_PASSWORD)
