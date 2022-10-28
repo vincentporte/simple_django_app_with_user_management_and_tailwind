@@ -9,7 +9,7 @@ from django.contrib.contenttypes.models import ContentType
 from apps.users.enums import Gender
 from apps.users.models import User
 
-DEFAULT_PASSWORD = "Neuralia.co"
+DEFAULT_PASSWORD = "YwiW%j6Hy!9bNu9Gz4"
 
 
 class UserFactory(factory.django.DjangoModelFactory):
