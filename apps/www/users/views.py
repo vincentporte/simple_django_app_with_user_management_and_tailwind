@@ -11,7 +11,7 @@ from django.views.generic import DetailView, FormView, UpdateView
 from django.views.generic.base import TemplateView
 
 from apps.users.models import User
-from apps.www.users.forms import LoginForm, SignUpForm
+from apps.www.users.forms import LoginForm, SignUpForm, UpdateProfileForm
 
 
 class HostView(LoginRequiredMixin, PermissionRequiredMixin, TemplateView):
@@ -87,26 +87,11 @@ class UpdateProfileView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
 
     model = User
     template_name = "users/update-profile.html"
-    fields = (
-        "first_name",
-        "last_name",
-        "gender",
-        "bio",
-        "birthdate",
-    )
+    form_class = UpdateProfileForm
     success_message = "Profile Updated"
 
     def get_object(self, queryset=None):
         return self.request.user
-
-    def get_form(self, form_class=None):
-        form = super().get_form(form_class=form_class)
-        form.fields["first_name"].widget.attrs = {"placeholder": "First name"}
-        form.fields["last_name"].widget.attrs = {"placeholder": "Last name"}
-        form.fields["bio"].widget.attrs = {"placeholder": "Bio"}
-        form.fields["birthdate"].widget.attrs = {"placeholder": "Birthdate"}
-        form.fields["first_name"].widget.attrs = {"placeholder": "First name"}
-        return form
 
 
 class UpdatePasswordView(
