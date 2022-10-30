@@ -10,7 +10,6 @@ from apps.www.users.views import (
     UserProfileView,
     complete_verification,
     log_out,
-    switch_language,
 )
 
 app_name = "users"
@@ -24,7 +23,6 @@ urlpatterns = [
     path("update-profile/", UpdateProfileView.as_view(), name="update"),
     path("update-password/", UpdatePasswordView.as_view(), name="password"),
     path("profile/<slug:slug>/", UserProfileView.as_view(), name="profile"),
-    path("switch-language/", switch_language, name="switch-language"),
     path(
         "reset/",
         auth_views.PasswordResetView.as_view(
