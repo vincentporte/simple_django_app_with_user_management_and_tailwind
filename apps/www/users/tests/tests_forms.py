@@ -1,7 +1,8 @@
+from django.forms import widgets
 from django.test import TestCase
 
 from apps.users.factories import DEFAULT_PASSWORD, UserFactory
-from apps.www.users.forms import LoginForm, SignUpForm
+from apps.www.users.forms import LoginForm, SignUpForm, UpdateProfileForm
 
 
 class LoginFormTest(TestCase):
@@ -70,3 +71,16 @@ class SignUpFormTest(TestCase):
         }
         form = SignUpForm(data=form_data)
         self.assertTrue(form.is_valid())
+
+
+class UpdateProfileFormTest(TestCase):
+    def test_fields(self):
+        form = UpdateProfileForm()
+        self.assertIn("first_name", form.fields)
+        self.assertIn("last_name", form.fields)
+        self.assertIn("gender", form.fields)
+        self.assertIn("bio", form.fields)
+        self.assertIn("birthdate", form.fields)
+
+        self.assertIsInstance(form.fields["birthdate"].widget, widgets.DateInput)
+        self.assertIsInstance(form.fields["gender"].widget, widgets.Select)

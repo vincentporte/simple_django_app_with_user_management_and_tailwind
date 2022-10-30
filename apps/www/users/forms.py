@@ -45,3 +45,22 @@ class SignUpForm(forms.ModelForm):
         password = self.cleaned_data.get("password")
         user.set_password(password)
         user.save()
+
+
+class UpdateProfileForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = (
+            "first_name",
+            "last_name",
+            "gender",
+            "bio",
+            "birthdate",
+        )
+        widgets = {
+            "first_name": forms.TextInput(attrs={"placeholder": "First Name"}),
+            "last_name": forms.TextInput(attrs={"placeholder": "Last Name"}),
+            "gender": forms.Select(attrs={"placeholder": "Gender"}),
+            "bio": forms.Textarea(attrs={"placeholder": "Bio"}),
+            "birthdate": forms.DateInput(format=("%Y-%m-%d"), attrs={"class": "form-control", "type": "date"}),
+        }
