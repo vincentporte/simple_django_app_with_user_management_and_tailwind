@@ -140,7 +140,7 @@ class UpdateProfileViewTest(TestCase):
         form = response.context_data["form"]
         self.assertEqual(
             list(form.fields.keys()),
-            ["first_name", "last_name", "gender", "bio", "birthdate", "language"],
+            ["first_name", "last_name", "gender", "bio", "birthdate"],
         )
 
     def test_anonymous(self):
@@ -162,7 +162,6 @@ class UpdateProfileViewTest(TestCase):
             "gender": "M",
             "bio": "work like a captain, play like a pirat",
             "birthdate": date(1978, 5, 17),
-            "language": "EN",
         }
         response = self.client.post(self.url, data=form_data)
         self.assertRedirects(response, self.user.get_absolute_url(), status_code=302)
@@ -173,7 +172,6 @@ class UpdateProfileViewTest(TestCase):
         self.assertEqual(user.gender, form_data["gender"])
         self.assertEqual(user.bio, form_data["bio"])
         self.assertEqual(user.birthdate, form_data["birthdate"])
-        self.assertEqual(user.language, form_data["language"])
 
 
 class UpdatePasswordViewTest(TestCase):
@@ -406,6 +404,3 @@ class HostViewTest(TestCase):
         self.client.login(email=user.email, password=DEFAULT_PASSWORD)
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
-
-
-# TO BE DONE : test switch_language mecanisms

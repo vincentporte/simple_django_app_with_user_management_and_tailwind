@@ -1,15 +1,12 @@
 # import requests  # to be changed to httpx
+
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib.auth.views import PasswordChangeView
 from django.contrib.messages.views import SuccessMessageMixin
-
-# from django.core.files.base import ContentFile
-from django.http import HttpResponse
 from django.shortcuts import redirect, reverse
 from django.urls import reverse_lazy
-from django.utils import translation
 from django.views.generic import DetailView, FormView, UpdateView
 from django.views.generic.base import TemplateView
 
@@ -96,7 +93,6 @@ class UpdateProfileView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
         "gender",
         "bio",
         "birthdate",
-        "language",
     )
     success_message = "Profile Updated"
 
@@ -131,10 +127,3 @@ class UpdatePasswordView(
 
     def get_success_url(self):
         return self.request.user.get_absolute_url()
-
-
-def switch_language(request):
-    lang = request.GET.get("lang", None)
-    if lang is not None:
-        request.session[translation.LANGUAGE_SESSION_KEY] = lang
-    return HttpResponse(status=200)

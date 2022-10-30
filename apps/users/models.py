@@ -56,13 +56,6 @@ class User(AbstractUser):
         default="",
         choices=users_enums.Gender.choices,
     )
-    language = models.CharField(
-        max_length=2,
-        verbose_name="language",
-        blank=True,
-        default=users_enums.Language.FR,
-        choices=users_enums.Language.choices,
-    )
     bio = models.TextField(verbose_name="bio", blank=True)
     birthdate = models.DateField(blank=True, null=True)
 
