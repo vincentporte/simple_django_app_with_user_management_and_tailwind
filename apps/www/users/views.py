@@ -41,7 +41,7 @@ class LoginView(FormView):
 
 
 def log_out(request):
-    messages.info(request, "See you later")
+    messages.success(request, "See you later")
     logout(request)
     return redirect(reverse("home:homepage"))
 
@@ -70,7 +70,7 @@ def complete_verification(request, key):
         user.email_verified = True
         user.email_secret = ""
         user.save()
-        messages.info(request, "Your email is verified")
+        messages.success(request, "Your email is verified")
     except User.DoesNotExist:
         messages.warning(request, "Something gets wrong")
     return redirect(reverse("home:homepage"))
@@ -79,6 +79,7 @@ def complete_verification(request, key):
 class UserProfileView(LoginRequiredMixin, DetailView):
 
     model = User
+    template_name = "users/user-detail.html"
     context_object_name = "user_obj"
     slug_field = "username"
 
@@ -102,13 +103,6 @@ class UpdatePasswordView(
 
     template_name = "users/update-password.html"
     success_message = "Password Updated"
-
-    def get_form(self, form_class=None):
-        form = super().get_form(form_class=form_class)
-        form.fields["old_password"].widget.attrs = {"placeholder": "Current password"}
-        form.fields["new_password1"].widget.attrs = {"placeholder": "New password"}
-        form.fields["new_password2"].widget.attrs = {"placeholder": "Confirm new password"}
-        return form
 
     def get_success_url(self):
         return self.request.user.get_absolute_url()
