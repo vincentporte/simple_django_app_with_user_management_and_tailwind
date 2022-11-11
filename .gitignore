@@ -32,4 +32,4 @@ __pycache__/
 .DS_Store
 
 # npm
-node_modules
+node_modules/
