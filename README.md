@@ -34,6 +34,21 @@ docker-compose up -d;make server
 make tests
 ```
 
+## Compile CSS file
+
+* interactive dev session
+
+```sh
+npm run theme:dev
+```
+
+* build production file
+
+```sh
+npm run theme:build
+```
+
+
 ## Author
 
 👤 **Vincent Porte**
