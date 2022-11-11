@@ -1,15 +1,22 @@
 import datetime
+import functools
 import random
 
 import factory
 import factory.fuzzy
+from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import Permission
 from django.contrib.contenttypes.models import ContentType
 
-from apps.users.enums import Gender
+from apps.users.enums import Country
 from apps.users.models import User
 
 DEFAULT_PASSWORD = "YwiW%j6Hy!9bNu9Gz4"
+
+
+@functools.cache
+def default_password():
+    return make_password(DEFAULT_PASSWORD)
 
 
 class UserFactory(factory.django.DjangoModelFactory):
@@ -20,10 +27,10 @@ class UserFactory(factory.django.DjangoModelFactory):
 
     first_name = factory.Faker("first_name")
     last_name = factory.Faker("last_name")
-    email = factory.Sequence("email{0}@neuralia.co".format)
-    password = factory.PostGenerationMethodCall("set_password", DEFAULT_PASSWORD)
+    email = factory.LazyAttribute(lambda a: "{}.{}@neuralia.co".format(a.first_name, a.last_name).lower())
+    password = factory.LazyFunction(default_password)
     birthdate = factory.fuzzy.FuzzyDate(datetime.date(1968, 1, 1), datetime.date(2000, 1, 1))
-    gender = random.choice(Gender.values)
+    country = random.choice(Country.values)
 
 
 class UserWithVerifiedEmailFactory(UserFactory):
