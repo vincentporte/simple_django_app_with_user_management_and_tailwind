@@ -49,12 +49,12 @@ class User(AbstractUser):
 
     date_joined = models.DateTimeField("date joined", default=timezone.now)
 
-    gender = models.CharField(
+    country = models.CharField(
         max_length=3,
-        verbose_name="gender",
-        blank=True,
-        default="",
-        choices=users_enums.Gender.choices,
+        verbose_name="country",
+        blank=False,
+        default=users_enums.Country.FR,
+        choices=users_enums.Country.choices,
     )
     bio = models.TextField(verbose_name="bio", blank=True)
     birthdate = models.DateField(blank=True, null=True)

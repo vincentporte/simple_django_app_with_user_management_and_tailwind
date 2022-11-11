@@ -13,11 +13,10 @@ class CustomUserAdmin(auth_admin.UserAdmin):
             "Personal info",
             {
                 "fields": (
-                    "gender",
+                    "country",
                     "first_name",
                     "last_name",
                     "email",
-                    "language",
                     "email_secret",
                 )
             },
@@ -43,7 +42,7 @@ class CustomUserAdmin(auth_admin.UserAdmin):
             {
                 "classes": ("wide",),
                 "fields": (
-                    "gender",
+                    "country",
                     "first_name",
                     "last_name",
                     "email",
