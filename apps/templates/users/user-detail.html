@@ -1,0 +1,26 @@
+{% extends "core/base.html" %}
+{% load i18n %}
+{% block page_title %}
+    {{user_obj.first_name}}'s Profile
+{% endblock page_title %}
+
+{% block content %}
+    <div class="relative top-20">
+        <div >
+            {{user_obj.first_name}}
+            {{user_obj.last_name}}
+            {{user_obj.bio}}
+            {{user_obj.country}}
+            {{user_obj.birthdate}}
+        </div>
+        <div >
+            {% if user == user_obj %}
+                <a href="{% url 'users:update' %}" class="btn-link underline decoration-transparent hover:decoration-inherit transition duration-300 ease-in-out">Edit Profile</a>
+                <a href="{% url "users:logout" %}" class="btn-link underline decoration-transparent hover:decoration-inherit transition duration-300 ease-in-out">{% trans "Log out" %}</a>
+            {% endif %}
+            {%if user.is_superuser %}
+                <a href="{% url "admin:index" %}" class="btn-link underline decoration-transparent hover:decoration-inherit transition duration-300 ease-in-out">{% trans "Admin" %}</a>
+            {%endif%}
+        </div>
+    </div>
+{% endblock content %}

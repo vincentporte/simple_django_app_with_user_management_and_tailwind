@@ -1,21 +1,28 @@
-{% extends "base.html" %}
+{% extends "core/base.html" %}
+{% load i18n %}
 
 {% block page_title %}
-    Log In
+    {% trans "Log in" %}
 {% endblock page_title %}
 
-{% block search-bar %}
-{% endblock search-bar %}
-
 {% block content %}
-
-    <div >
-
-        {% include 'mixins/auth/auth_form.html' with form=form cta="Log in" %}
-
-        <div >
-            <span >Don't have an account?</span>
-            <a href="{% url 'users:signup' %}" >Sign up</a>
+    <div class="flex flex-col bg-slate-50 shadow-md px-4 sm:px-6 md:px-8 lg:px-10 py-8 rounded-md md:w-full max-w-md">
+        <div class="font-medium self-center text-xl sm:text-2xl uppercase text-gray-800">
+            {% trans "Log in" %}
+        </div>
+        <div class="mt-10">
+            {% include 'mixins/generic_form.html' with form=form cta="Log in" %}
+        </div>
+        <div class="mt-5">
+            <span >Lost password?</span>
+            <a href="{% url 'users:password_reset' %}" class="btn-link underline decoration-transparent hover:decoration-inherit transition duration-300 ease-in-out">{% trans "Reset password" %}</a>
+        </div>
+        <div class="mt-1">
+            <span >Not registered?</span>
+            <a href="{% url 'users:signup' %}" class="btn-link underline decoration-transparent hover:decoration-inherit transition duration-300 ease-in-out">{% trans "Sign up" %}</a>
         </div>
     </div>
+
 {% endblock content %}
+
+
