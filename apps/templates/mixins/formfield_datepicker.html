@@ -1,0 +1,16 @@
+<div class="flex flex-col mb-6 {% if field.errors %}has_error{% endif %}">
+    <label for="{{field.name}}" class="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">{{field.label}}</label>
+    <div class="relative">
+        <input id="{{field.name}}"
+            type="{{field.field.widget.input_type}}"
+            name="{{field.name}}"
+            value="{{field.initial|date:"Y-m-d"}}"
+            class="text-sm sm:text-base placeholder-gray-500 pl-4 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-400"
+            placeholder="{{field.help_text}}" />
+    </div>
+    {% if field.errors %}
+        {% for error in field.errors %}
+            <span >{{error}}</span>
+        {% endfor %}
+    {% endif %}
+</div>
