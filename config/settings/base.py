@@ -32,7 +32,7 @@ DJANGO_APPS = [
 LOCAL_APPS = [
     # Core apps, order is important.
     "apps.users",
-    "apps.www.home",
+    "apps.www",
 ]
 
 THIRD_PARTY_APPS = ["fontawesomefree"]
