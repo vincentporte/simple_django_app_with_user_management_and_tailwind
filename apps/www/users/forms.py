@@ -53,14 +53,14 @@ class UpdateProfileForm(forms.ModelForm):
         fields = (
             "first_name",
             "last_name",
-            "gender",
+            "country",
             "bio",
             "birthdate",
         )
         widgets = {
             "first_name": forms.TextInput(attrs={"placeholder": "First Name"}),
             "last_name": forms.TextInput(attrs={"placeholder": "Last Name"}),
-            "gender": forms.Select(attrs={"placeholder": "Gender"}),
-            "bio": forms.Textarea(attrs={"placeholder": "Bio"}),
+            "country": forms.Select(),
+            "bio": forms.Textarea(attrs={"placeholder": "Bio", "rows": "2"}),
             "birthdate": forms.DateInput(format=("%Y-%m-%d"), attrs={"class": "form-control", "type": "date"}),
         }

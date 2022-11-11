@@ -109,13 +109,13 @@ class UserProfileViewTest(TestCase):
         )
 
     def test_authenticated(self):
-        self.client.login(email=self.user.email, password=DEFAULT_PASSWORD)
+        self.client.force_login(self.user)
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, reverse("users:update"))
 
     def test_wrong_slug(self):
-        self.client.login(email=self.user.email, password=DEFAULT_PASSWORD)
+        self.client.force_login(self.user)
         url = reverse("users:profile", kwargs={"slug": uuid.uuid4()})
         response = self.client.get(url)
         self.assertEqual(response.status_code, 404)
@@ -127,20 +127,20 @@ class UpdateProfileViewTest(TestCase):
         self.url = reverse("users:update")
 
     def test_csrf(self):
-        self.client.login(email=self.user.email, password=DEFAULT_PASSWORD)
+        self.client.force_login(self.user)
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "csrfmiddlewaretoken")
 
     def test_fields(self):
-        self.client.login(email=self.user.email, password=DEFAULT_PASSWORD)
+        self.client.force_login(self.user)
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
 
         form = response.context_data["form"]
         self.assertEqual(
             list(form.fields.keys()),
-            ["first_name", "last_name", "gender", "bio", "birthdate"],
+            ["first_name", "last_name", "country", "bio", "birthdate"],
         )
 
     def test_anonymous(self):
@@ -152,14 +152,14 @@ class UpdateProfileViewTest(TestCase):
         )
 
     def test_authenticated(self):
-        self.client.login(email=self.user.email, password=DEFAULT_PASSWORD)
+        self.client.force_login(self.user)
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
 
         form_data = {
             "first_name": "Anton",
             "last_name": "Larikova",
-            "gender": "M",
+            "country": "FR",
             "bio": "work like a captain, play like a pirat",
             "birthdate": date(1978, 5, 17),
         }
@@ -169,7 +169,7 @@ class UpdateProfileViewTest(TestCase):
         user = User.objects.get(email=self.user.email)
         self.assertEqual(user.first_name, form_data["first_name"])
         self.assertEqual(user.last_name, form_data["last_name"])
-        self.assertEqual(user.gender, form_data["gender"])
+        self.assertEqual(user.country, form_data["country"])
         self.assertEqual(user.bio, form_data["bio"])
         self.assertEqual(user.birthdate, form_data["birthdate"])
 
@@ -181,7 +181,7 @@ class UpdatePasswordViewTest(TestCase):
         cls.url = reverse("users:password")
 
     def test_csrf(self):
-        self.client.login(email=self.user.email, password=DEFAULT_PASSWORD)
+        self.client.force_login(self.user)
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "csrfmiddlewaretoken")
@@ -195,7 +195,7 @@ class UpdatePasswordViewTest(TestCase):
         )
 
     def test_wrong_password(self):
-        self.client.login(email=self.user.email, password=DEFAULT_PASSWORD)
+        self.client.force_login(self.user)
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
 
@@ -208,7 +208,7 @@ class UpdatePasswordViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_passwords_dont_match(self):
-        self.client.login(email=self.user.email, password=DEFAULT_PASSWORD)
+        self.client.force_login(self.user)
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
 
@@ -221,7 +221,7 @@ class UpdatePasswordViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_valid(self):
-        self.client.login(email=self.user.email, password=DEFAULT_PASSWORD)
+        self.client.force_login(self.user)
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
 
@@ -376,7 +376,7 @@ class complete_verificationTest(TestCase):
 class log_outTest(TestCase):
     def test_log_out(self):
         user = UserFactory()
-        self.client.login(email=user.email, password=DEFAULT_PASSWORD)
+        self.client.force_login(user)
         response = self.client.get(reverse("users:logout"))
         self.assertRedirects(response, reverse("home:homepage"), status_code=302)
 
@@ -395,12 +395,12 @@ class HostViewTest(TestCase):
 
     def test_without_permission(self):
         user = UserFactory()
-        self.client.login(email=user.email, password=DEFAULT_PASSWORD)
+        self.client.force_login(user)
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 403)
 
     def test_with_permission(self):
         user = HostFactory()
-        self.client.login(email=user.email, password=DEFAULT_PASSWORD)
+        self.client.force_login(user)
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)

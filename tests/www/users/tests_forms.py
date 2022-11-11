@@ -78,9 +78,9 @@ class UpdateProfileFormTest(TestCase):
         form = UpdateProfileForm()
         self.assertIn("first_name", form.fields)
         self.assertIn("last_name", form.fields)
-        self.assertIn("gender", form.fields)
+        self.assertIn("country", form.fields)
         self.assertIn("bio", form.fields)
         self.assertIn("birthdate", form.fields)
 
         self.assertIsInstance(form.fields["birthdate"].widget, widgets.DateInput)
-        self.assertIsInstance(form.fields["gender"].widget, widgets.Select)
+        self.assertIsInstance(form.fields["country"].widget, widgets.Select)
