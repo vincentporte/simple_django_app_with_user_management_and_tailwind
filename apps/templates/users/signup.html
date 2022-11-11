@@ -1,22 +1,28 @@
-{% extends "base.html" %}
-
+{% extends "core/base.html" %}
+{% load i18n %}
 {% block page_title %}
-    Sign Up
+    {% trans "Log in" %}
 {% endblock page_title %}
 
-{% block search-bar %}
-{% endblock search-bar %}
 
 {% block content %}
 
-    <div >
-
-        {% include 'mixins/auth/auth_form.html' with form=form cta="Sign up" %}
-
+    <div class="flex flex-col bg-slate-50 shadow-md px-4 sm:px-6 md:px-8 lg:px-10 py-8 rounded-md w-full max-w-md">
+        <div class="font-medium self-center text-xl sm:text-2xl uppercase text-gray-800">
+            {% trans "Sign Up" %}
+        </div>
+        <div class="mt-10">
+            {% include 'mixins/generic_form.html' with form=form cta="Sign up" %}
+        </div>
         <div class="mt-5">
             <span >Have an account?</span>
-            <a href="{% url 'users:login' %}" >Log in</a>
+            <a href="{% url 'users:login' %}" class="btn-link underline decoration-transparent hover:decoration-inherit transition duration-300 ease-in-out">{% trans "Log in" %}</a>
         </div>
-
     </div>
+
+
+
+
+
+
 {% endblock content %}
