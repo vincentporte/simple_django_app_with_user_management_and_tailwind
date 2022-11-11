@@ -4,13 +4,8 @@ else
 	EXEC_CMD :=
 endif
 
-ifeq ($(DJANGO_SETTINGS),)
-    SETTINGS :=
-else
-    SETTINGS := --settings=$(DJANGO_SETTINGS)
-endif
 
-.PHONY: console migrate migrations server
+.PHONY: console migrate migrations server dependencies
 
 # DEVELOPMENT
 # ~~~~~~~~~~~
@@ -19,16 +14,19 @@ endif
 # --------------------------------------------------------------------------------------------------
 
 console:
-	$(EXEC_CMD) python manage.py shell $(SETTINGS)
+	$(EXEC_CMD) python manage.py shell_plus
 
 migrate:
-	$(EXEC_CMD) python manage.py migrate $(SETTINGS)
+	$(EXEC_CMD) python manage.py migrate
 
 migrations:
-	$(EXEC_CMD) python manage.py makemigrations $(SETTINGS)
+	$(EXEC_CMD) python manage.py makemigrations
 
 server:
-	$(EXEC_CMD) python manage.py runserver $(SETTINGS)
+	$(EXEC_CMD) python manage.py runserver
+
+dependencies:
+	poetry lock; poetry run poe export; poetry run poe export_dev
 
 # QUALITY ASSURANCE
 # ~~~~~~~~~~~~~~~~~
@@ -89,3 +87,9 @@ coverage:
 ## Run the tests in "spec" mode.
 spec:
 	poetry run py.test --spec -p no:sugar
+
+# SETUP
+# ~~~~~
+.PHONY: createsuperuser
+createsuperuser:
+	poetry run python manage.py createsuperuser

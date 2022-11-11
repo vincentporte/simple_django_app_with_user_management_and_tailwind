@@ -1,10 +1,10 @@
 [tool.poetry]
 name = "simple_user_app"
 version = "0.1.0"
-description = "Simple Django App with User Management, Tailwind CSS, Dockerized Postgres and Poetry"
+description = "Simple Django App with User Management, Tailwind CSS, Dockerized Postgres and Poetry"
 authors = ["Vincent Porte <vincent@neuralia.co>"]
 license = "MIT"
-readme = "README.rst"
+readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.10"
