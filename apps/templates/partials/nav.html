@@ -1,15 +1,63 @@
-{% load i18n %}
-<ul >
-    {% if user.is_authenticated %}
-        {% if not user.email_verified%}please check your mail box to verify your email{% endif %}
-        {% if request.session.is_hosting %}
-            <li class="nav_link"><a href="{% url 'rooms:create' %}">{% trans "Create Room" %}</a></li>
-        {% endif %}
+{% load static i18n %}
 
-        <li class="nav_link"><a href="{{user.get_absolute_url}}">{% trans "Profile" %}</a></li>
-        <li class="nav_link"><a href="{% url "users:logout" %}">{% trans "Log out" %}</a></li>
-    {% else %}
-        <li class="nav_link"><a href="{% url "users:login" %}">{% trans "Log in" %}</a></li>
-        <li class="nav_link"><a href="{% url "users:signup" %}">{% trans "Sign up" %}</a></li>
-    {% endif %}
-</ul>
+<div>
+    <a href="{% url "home:homepage" %}">
+        <img src="{% static 'img/logo.png' %}" />
+    </a>
+</div>
+<!-- Hamburger Icon -->
+<svg
+    xmlns="<http://www.w3.org/2000/svg>"
+    id="menu-hamburger"
+    class="h-6 w-6  md:hidden block"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+>
+    <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M4 6h16M4 12h16M4 18h16"
+    />
+</svg>
+<div class="hidden w-full md:flex md:items-center md:w-auto " id="menu">
+    <div class="flex ">
+        <ul class="text-base p-3 md:flex  md:justify-between">
+            <li>
+                <a class="md:p-3 md:px-5 py-2 block text-slate-900 rounded hover:text-white hover:bg-slate-900" href="#">Trips</a>
+            </li>
+            <li>
+                <a class="md:p-3 md:px-5 py-2 block text-slate-900 rounded hover:text-white hover:bg-slate-900" href="#">Crafts</a>
+            </li>
+            <li>
+                <a class="md:p-3 md:px-5 py-2 block text-slate-900 rounded hover:text-white hover:bg-slate-900" href="#">Blog</a>
+            </li>
+        </ul>
+    </div>
+    <div class="flex ">
+        <ul class="text-base p-3 md:flex  md:justify-between">
+            {% if user.is_authenticated %}
+                <li>
+                    <a class="md:p-3 py-2 block rounded text-white bg-blue-600"  href="{{user.get_absolute_url}}">Profile</a>
+                </li>
+            {%else%}
+                <li>
+                    <a class="md:p-3 py-2 block rounded text-blue-600"  href="{% url "users:login" %}">Login</a>
+                </li>
+                <li>
+                    <a class="md:p-3 py-2 block rounded text-white bg-blue-600"  href="{% url "users:signup" %}">{% trans "Sign up" %}</a>
+                </li>
+            {%endif%}
+        </ul>
+    </div>
+</div>
+
+<script>
+    const button = document.querySelector('#menu-hamburger'); // Hamburger Icon
+    const menu = document.querySelector('#menu'); // Menu
+
+    button.addEventListener('click', () => {
+        menu.classList.toggle('hidden');
+    });
+</script>

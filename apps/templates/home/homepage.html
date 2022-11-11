@@ -1,11 +1,12 @@
-{% extends "base.html" %}
+{% extends "core/base.html" %}
 {% load static i18n %}
 {% block page_title %}
     Home
 {% endblock page_title %}
 
 {% block content %}
-    Bienvenue {{user.first_name}}
-    {% if perms.users.host %}<a href="{% url 'users:host' %}" >link to host page</a>{% endif %}
-
+    <div class="flex flex-col top-1/3">
+        Bienvenue {{user.email}}
+        {% if perms.users.host %}<a href="{% url 'users:host' %}" >link to host page</a>{% endif %}
+    </div>
 {% endblock content%}
