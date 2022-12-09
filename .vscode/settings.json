@@ -32,7 +32,6 @@
     "editor.wordBasedSuggestions": true,
     "files.trimTrailingWhitespace": true,
     "html.format.enable": true,
-
     "[python]": {
         "editor.wordBasedSuggestions": true,
         "editor.quickSuggestions": {
@@ -57,5 +56,6 @@
     "files.insertFinalNewline": true,
     "python.testing.pytestArgs": [
         "."
-    ]
+    ],
+    "python.defaultInterpreterPath": "~/.venv/bin/python"
 }
